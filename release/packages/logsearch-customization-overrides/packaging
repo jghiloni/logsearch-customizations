@@ -1,0 +1,4 @@
+set -e
+
+cp -Rvf config-overrides/* ${BOSH_INSTALL_TARGET}/
+cp -Rvf scripts ${BOSH_INSTALL_TARGET}/

@@ -1,0 +1,4 @@
+name: logstash
+fingerprint: ac6bcbd30b26d6c45329a7f2ec9d7c1ace5ed60eeb669dad8698db9ba0dc3a9b
+dependencies:
+- openjdk-11

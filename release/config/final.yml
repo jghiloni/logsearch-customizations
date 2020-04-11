@@ -1,0 +1,5 @@
+name: logsearch-customizations
+blobstore:
+  provider: local
+  options:
+    blobstore_path: /tmp/lc-blobs

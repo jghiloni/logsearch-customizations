@@ -1,0 +1,9 @@
+<% if p('logstash_parser.default_overrides').is_a? Array %>
+  <% p('logstash_parser.default_overrides').each do |override| %>
+    <% if override.key? 'content' %>
+      <%= override['content'] %>
+    <% end %>
+  <% end %>
+<% elsif p('logstash_parser.default_overrides') != '' %>
+  <%= p('logstash_parser.default_overrides') %>
+<% end %>

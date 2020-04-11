@@ -1,0 +1,4 @@
+name: logsearch-config
+fingerprint: b524032f6dd59f00158bcd72a229c983229a96ef4019e3072308e48425da6f08
+dependencies:
+- ruby-2.4-r5

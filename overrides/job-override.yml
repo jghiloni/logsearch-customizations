@@ -1,0 +1,11 @@
+---
+- type: replace
+  # Use ~1 to escape the / character. See https://bosh.io/docs/cli-ops-files/#escaping
+  path: /templates/config~1override-defaults.conf.erb?
+  value: config/override-defaults.conf
+
+- type: replace
+  path: /properties/logstash_parser.default_overrides?
+  value:
+    description: "The configuration to embed at the end of the logstash config. Can either be a set of config as a string or a list of hashes in the form of [{name: path_to_parsing_rules.conf}]"
+    default: ''

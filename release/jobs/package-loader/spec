@@ -1,0 +1,8 @@
+---
+name: package-loader
+
+templates: {}
+
+packages: [logsearch-customization-overrides]
+
+properties: {}

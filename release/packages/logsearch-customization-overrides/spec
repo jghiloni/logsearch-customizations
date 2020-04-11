@@ -1,0 +1,8 @@
+---
+name: logsearch-customization-overrides
+
+dependencies: []
+
+files:
+- config-overrides/**/*.conf
+- scripts/**/*.rb
