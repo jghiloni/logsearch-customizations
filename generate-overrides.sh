@@ -1,13 +1,16 @@
 #!/bin/bash
 
-set -eux
+set -eu
 
-BASEDIR=$(dirname ${BASH_SOURCE[0]})
+BASEDIR=$(dirname $(realpath ${BASH_SOURCE[0]}))
 RELEASE=${BASEDIR}/release
 
 logsearch_boshrelease_dir=$1
 shift
 
+logsearch_boshrelease_dir=$(realpath ${logsearch_boshrelease_dir})
+
+#### COPY THE INGESTOR_SYSLOG JOB ####
 # We want this to be as similar to the standard logsearch ingestor_syslog job 
 # as possible, so we will only make the customizations that are absolutely necessary
 
@@ -19,7 +22,7 @@ bosh interpolate ${logsearch_boshrelease_dir}/jobs/ingestor_syslog/spec \
     -o ${BASEDIR}/overrides/job-override.yml > ${RELEASE}/jobs/ingestor_syslog/spec
 
 # Step 3: Copy all the new templates to the job
-cp -Rvf ${BASEDIR}/overrides/templates/* ${RELEASE}/jobs/ingestor_syslog/templates/
+cp -Rvf ${BASEDIR}/overrides/templates/jobs/ingestor_syslog/* ${RELEASE}/jobs/ingestor_syslog/templates/
 
 # Step 4: Inject the use of the new templates to the start script
 mv ${RELEASE}/jobs/ingestor_syslog/templates/bin/ingestor_syslog ${BASEDIR}/ingestor_syslog.tmp
@@ -29,9 +32,28 @@ trap "rm ${BASEDIR}/ingestor_syslog.tmp" EXIT
 
 line=$(grep -ne '^/var/vcap/packages/logstash/bin/logstash' ${BASEDIR}/ingestor_syslog.tmp | cut -d ':' -f1)
 head -n+$(( line - 1 )) ${BASEDIR}/ingestor_syslog.tmp > ${RELEASE}/jobs/ingestor_syslog/templates/bin/ingestor_syslog
-cat >> ${RELEASE}/jobs/ingestor_syslog/templates/bin/ingestor_syslog <<EOF
+cat >> ${RELEASE}/jobs/ingestor_syslog/templates/bin/ingestor_syslog <<'EOF'
 
 cat ${JOB_DIR}/config/override-defaults.conf >> ${JOB_DIR}/config/logstash.conf
 
 EOF
-tail -n+$line ${BASEDIR}/ingestor_syslog.tmp >> ${RELEASE}/jobs/ingestor_syslog/templates/bin/ingestor_syslog
+tail -n+${line} ${BASEDIR}/ingestor_syslog.tmp >> ${RELEASE}/jobs/ingestor_syslog/templates/bin/ingestor_syslog
+
+### COPY THE LOGSEARCH-CONFIG PACKAGE ####
+cp -Rvf ${logsearch_boshrelease_dir}/packages/logsearch-config ${RELEASE}/packages/
+cp -Rvf ${logsearch_boshrelease_dir}/src/logsearch-config ${RELEASE}/src/
+cp -Rvf ${BASEDIR}/overrides/templates/src/logsearch-config/* ${RELEASE}/src/logsearch-config/
+
+### VENDOR ALL OTHER NECESSARY PACKAGES
+pushd ${RELEASE}
+for package in $(bosh int jobs/ingestor_syslog/spec --path /packages | awk '{print $2}' | grep -v logsearch-config); do
+    bosh vendor-package ${package} ${logsearch_boshrelease_dir}
+done
+
+for package in $(bosh int packages/logsearch-config/spec --path /dependencies | awk '{print $2}' | grep -v logsearch-config); do
+    bosh vendor-package ${package} ${logsearch_boshrelease_dir}
+done
+popd
+
+### UPLOAD ALL BLOBS
+${BASEDIR}/add-blobs.sh
