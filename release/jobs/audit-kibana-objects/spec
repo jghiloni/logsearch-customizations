@@ -1,0 +1,49 @@
+---
+name: audit-kibana-objects
+
+templates:
+  bin/generate-objects: bin/generate-objects
+  bin/import-objects: bin/import-objects
+  bin/run: bin/run
+
+  kibana-objects/index-pattern/logs-audit.json.erb:  kibana-objects/index-pattern/logs-audit*.json
+  kibana-objects/search/audit-all.json.erb: kibana-objects/search/audit-all.json
+
+packages:
+- ruby-2.4-r5
+
+consumes:
+- name: elasticsearch
+  type: elasticsearch
+  optional: true
+- name: cloud_controller
+  type: cloud_controller
+  optional: true
+
+properties:
+  elasticsearch_config.audit_index_prefix:
+    default: 'logs-audit'
+
+  kibana_objects.upload_patterns:
+    default:
+    - {type: index-pattern, pattern: /var/vcap/jobs/audit-kibana-objects/kibana-objects/index-pattern/*.json}
+    - {type: search, pattern: /var/vcap/jobs/audit-kibana-objects/kibana-objects/search/*.json}
+    #- {type: dashboard, pattern: /var/vcap/jobs/audit-kibana-objects/kibana-objects/dashboard/*.json}
+    #- {type: visualization, pattern: /var/vcap/jobs/audit-kibana-objects/kibana-objects/visualization/*.json}
+  kibana_objects.default_index:
+    description: "Default index to set in Kibana"
+    default: "logs-platform*"
+
+  cloudfoundry.system_domain:
+    description: The Cloud Foundry System Domain
+  cloudfoundry.logs_hostname:
+    description: logs deployment hostname
+    default: logs
+  cloudfoundry.skip_ssl_validation:
+    description: "Set to true to skip SSL validation (defaults to false)"
+    default: false
+  cloudfoundry.user:
+    description: The Cloud Foundry API user.
+  cloudfoundry.password:
+    description: The Cloud Foundry API user's password.
+
