@@ -1,0 +1,64 @@
+name: logsearch-customizations
+version: "1"
+commit_hash: 1680c52
+uncommitted_changes: false
+jobs:
+- name: audit-kibana-objects
+  version: 80b1fc071788fd5cf96ade9f1b19ed241bb5d63cd8b2f11a8ae06d16f880a001
+  fingerprint: 80b1fc071788fd5cf96ade9f1b19ed241bb5d63cd8b2f11a8ae06d16f880a001
+  sha1: sha256:ba32312ecfbd8a6a727ec29ed4f4946acae4a2c0908cf6bcb7254b7d1baa214e
+  packages:
+  - ruby-2.4-r5
+- name: ingestor_syslog
+  version: 5f37ec69053bdac4641fc2975409a8b6b820ad23943345ad715934b8b55a8130
+  fingerprint: 5f37ec69053bdac4641fc2975409a8b6b820ad23943345ad715934b8b55a8130
+  sha1: sha256:9f271b686112941536bcf45f9548b226c6aa1f9e5ff62f9ced562d2da2e858e0
+  packages:
+  - logstash
+  - logsearch-config
+  - openjdk-11
+- name: kibana-auth-plugin
+  version: 110221641c633448c15ba6b1827542da24eba1e7f052f50e430f0ccac604815a
+  fingerprint: 110221641c633448c15ba6b1827542da24eba1e7f052f50e430f0ccac604815a
+  sha1: sha256:4921710664be2531c5865b3bbb3d9e63a088d9efe8fa41ee85cc4b05d37332e5
+  packages:
+  - kibana-auth-plugin
+- name: package-loader
+  version: 36250085dbacbc640fd72ef8b2a13ab13430180b070c8083e6e17e6802407e0a
+  fingerprint: 36250085dbacbc640fd72ef8b2a13ab13430180b070c8083e6e17e6802407e0a
+  sha1: sha256:95dbcd853e3e071686eb51427908a0f48900b78845d3a8bea963f5e31c767e4c
+  packages:
+  - logsearch-customization-overrides
+packages:
+- name: kibana-auth-plugin
+  version: 252121a407b0c04d798ee57bfc20403da445c31a53fa95ef50a23989cc161827
+  fingerprint: 252121a407b0c04d798ee57bfc20403da445c31a53fa95ef50a23989cc161827
+  sha1: sha256:60fd13f41496e8590776c9834409f38870494d4c6e38f0c24fc1f356a09a5dc9
+  dependencies: []
+- name: logsearch-config
+  version: 93530992686c09913d327d27ddd420c95b78e264a2f2d5fbe9d1fede1d87cabb
+  fingerprint: 93530992686c09913d327d27ddd420c95b78e264a2f2d5fbe9d1fede1d87cabb
+  sha1: sha256:0d5903f08aec0d3787493c0769058e44f99bb49e46ac0b9a3d6ea5e48284d8a6
+  dependencies:
+  - ruby-2.4-r5
+- name: logsearch-customization-overrides
+  version: 3a59c896fc34b8a9205abc7006c7563e67e02669045e12c7bc5bc94db23f6cf3
+  fingerprint: 3a59c896fc34b8a9205abc7006c7563e67e02669045e12c7bc5bc94db23f6cf3
+  sha1: sha256:a3c33438dbf56acbe2bdcbd8776457ead5a4781d363742c1a0529dcc4c46f083
+  dependencies: []
+- name: logstash
+  version: ac6bcbd30b26d6c45329a7f2ec9d7c1ace5ed60eeb669dad8698db9ba0dc3a9b
+  fingerprint: ac6bcbd30b26d6c45329a7f2ec9d7c1ace5ed60eeb669dad8698db9ba0dc3a9b
+  sha1: sha256:b3c9604a2772f34d7826ee36dd827ebc763b23a81b67a7059baea41ac1093a19
+  dependencies:
+  - openjdk-11
+- name: openjdk-11
+  version: 1b2aca50b3a14a3fdf4e92b9b9dcee3359995915f0cedc2d1be78c54b6ac82dc
+  fingerprint: 1b2aca50b3a14a3fdf4e92b9b9dcee3359995915f0cedc2d1be78c54b6ac82dc
+  sha1: sha256:9734ac4ab5b8951df5f01fa3b9492d65e781dbf9f32c703b611202f526c40029
+  dependencies: []
+- name: ruby-2.4-r5
+  version: 726cbb2214e138b576700db6a30698edb2b994e2
+  fingerprint: 726cbb2214e138b576700db6a30698edb2b994e2
+  sha1: 6addce325a193d9f2c326dbd926ab42dc023f132
+  dependencies: []
