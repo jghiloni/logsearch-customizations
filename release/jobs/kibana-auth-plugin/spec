@@ -1,0 +1,57 @@
+---
+name: kibana-auth-plugin
+
+description: This job runs authentication plugin for Kibana UI via Cloud Foundry API
+
+templates:
+  config/config.sh.erb: config/config.sh
+
+packages:
+  - kibana-auth-plugin
+
+consumes:
+- name: cloud_controller
+  type: cloud_controller
+  optional: true
+- name: kibana
+  type: kibana
+  optional: true
+- name: redis
+  type: redis
+  optional: true
+
+properties:
+  kibana-auth.app_name:
+    description: "Kibana dashboard app name"
+    default: logs
+  kibana-auth.use_https:
+    description: "A boolean indicating whether or not you want the redirect_uri to be forced to https"
+    default: "true"
+  kibana-auth.cloudfoundry.api_endpoint:
+    description: "The CF API URL"
+  kibana-auth.cloudfoundry.skip_ssl_validation:
+    description: "Toggles verification of the CF API SSL certificate"
+    default: "false"
+  kibana-auth.cloudfoundry.client_id:
+    description: "The UAA Kibana oauth2 client id"
+    default: kibana_oauth2_client
+  kibana-auth.cloudfoundry.client_secret:
+    description: "Password to be used for the UAA kibana oauth2 client"
+  kibana-auth.cloudfoundry.system_org:
+    description: "The organisation that owns the CF system domain"
+    default: system
+  kibana-auth.cloudfoundry.system_domain:
+    description: "The CF system domain"
+  kibana-auth.session_expiration_ms:
+    description: "Kibana user session expiration period in milliseconds (default to 12h)"
+    default: 43200000
+  kibana-auth.skip_authorization:
+    description: "Allow any authenticated user to view all logs for all organizations in Kibana"
+    default: false
+  kibana-auth.session_key:
+    description: "Session cookie encryption passphrase; must be >=32 bytes long"
+  kibana-auth.redis_host:
+    description: Redis host address
+  kibana-auth.redis_port:
+    description: Redis port
+    default: 6379

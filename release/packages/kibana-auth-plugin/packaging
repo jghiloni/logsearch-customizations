@@ -1,0 +1,5 @@
+set -e
+
+mkdir kibana
+cp -r kibana-cf_authentication kibana/
+zip -r $BOSH_INSTALL_TARGET/kibana-auth-plugin.zip kibana/

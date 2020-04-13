@@ -52,7 +52,7 @@ cp -Rvf ${BASEDIR}/overrides/templates/src/logsearch-config/* ${RELEASE}/src/log
 ### COPY THE KIBANA-AUTH-PLUGIN PACKAGE 
 cp -Rvf ${logsearch_for_cloudfoundry_dir}/packages/kibana-auth-plugin ${RELEASE}/packages/
 cp -Rvf ${logsearch_for_cloudfoundry_dir}/src/kibana-cf_authentication ${RELEASE}/src/
-cp -Rvf ${BASEDIR}/overrides/template/src/kibana-cf_authentication/* ${RELEASE}/src/kibana-cf_authentication/
+cp -Rvf ${BASEDIR}/overrides/templates/src/kibana-cf_authentication/* ${RELEASE}/src/kibana-cf_authentication/
 
 ### VENDOR ALL OTHER NECESSARY PACKAGES
 pushd ${RELEASE}

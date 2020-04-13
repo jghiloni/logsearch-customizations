@@ -1,8 +1,4 @@
 - type: replace
-  path: /instance_groups/name=maintenance/jobs/name=audit-kibana-objects/consumes/cloud_controller/deployment?
-  value: ((cf_deployment_name))
-
-- type: replace
   path: /instance_groups/name=ingestor/jobs/name=ingestor_syslog/properties/logstash_parser/filters?
   value:
   - uaa-setup: /var/vcap/packages/logsearch-customization-overrides/uaa-setup.conf
@@ -11,6 +7,10 @@
 
 - type: replace
   path: /instance_groups/name=ingestor/jobs/name=ingestor_syslog/release
+  value: logsearch-customizations
+
+- type: replace
+  path: /instance_groups/name=kibana/jobs/name=kibana-auth-plugin/release
   value: logsearch-customizations
 
 - type: replace
@@ -50,6 +50,10 @@
       cloudfoundry:
         user: admin
         password: "((cf_admin_password))"
+
+- type: replace
+  path: /instance_groups/name=maintenance/jobs/name=audit-kibana-objects/consumes/cloud_controller/deployment?
+  value: ((cf_deployment_name))
 
 - type: replace
   path: /releases/name=bpm/version
