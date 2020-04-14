@@ -34,7 +34,9 @@ module.exports = (server, config, cache) => {
           username: profile.username,
           displayName: profile.name,
           email: profile.email,
-          raw: profile
+          raw: profile,
+          isAdmin: false,
+          scopes: []
         }
 
         // get user orgs
@@ -61,6 +63,31 @@ module.exports = (server, config, cache) => {
         account.spaces = spaces.resources.map((resource) => {
           return resource.entity.name
         })
+
+        account.isAdmin = false
+        const systemOrg = config.get('authentication.cf_system_org')
+        server.log(['debug', 'authentication', 'systemOrg'], 'System Org = ' + systemOrg)
+
+        const useScopes = (systemOrg === "use-oauth-scopes")
+
+        if (useScopes) {
+          // get user scopes
+          const userDetails = await get(config.get('authentication.self_info_uri') + profile.user_id)
+          account.scopes = userDetails.groups.map(g => g.display)
+          server.log(['debug', 'scopes'], JSON.stringify(account.scopes))
+
+          const adminScopes = ["cloud_controller.admin","cloud_controller.admin_read_only","cloud_controller.global_auditor"]
+          for (const adminScope of adminScopes) {
+            server.log(['debug', 'helper', 'isAdmin'], 'Checking to see if ' + adminScope + ' is in ' + JSON.stringify(account.scopes))
+            account.isAdmin = (account.scopes.indexOf(adminScope) !== -1)
+
+            if (account.isAdmin) {
+              break
+            }
+          }
+        } else {
+          account.isAdmin = account.orgs.indexOf(systemOrg) !== -1
+        }
 
         // store user data in the cache
         await cache.set(credentials.session_id, { credentials, account }, 0)

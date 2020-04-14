@@ -10,8 +10,17 @@
   value: logsearch-customizations
 
 - type: replace
+  path: /instance_groups/name=kibana/jobs/name=kibana/properties/kibana/env/-
+  value: 
+    NODE_EXTRA_CA_CERTS: /etc/ssl/certs/ca-certificates.crt
+
+- type: replace
   path: /instance_groups/name=kibana/jobs/name=kibana-auth-plugin/release
   value: logsearch-customizations
+
+- type: replace
+  path: /instance_groups/name=kibana/jobs/name=kibana-auth-plugin/properties/kibana-auth?/cloudfoundry?/system_org?
+  value: use-oauth-scopes
 
 - type: replace
   path: /instance_groups/name=ingestor/jobs/name=ingestor_syslog/properties/logstash_parser/default_overrides?

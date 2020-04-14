@@ -167,6 +167,8 @@ module.exports = (kibana) => {
 
             if (match !== null && !request.auth.artifacts) {
               request.setUrl('/' + match[1] + '/_filtered_search')
+            } else if (/api\/index_management\/indices/.test(request.path)) {
+              request.setUrl('/_filtered_indices')
             }
           }
 
